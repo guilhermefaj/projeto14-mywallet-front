@@ -40,7 +40,7 @@ export default function SignInPage() {
         <MyWalletLogo />
         <input
           name="email"
-          placeholder="email"
+          placeholder="E-mail"
           type="email"
           value={form.email}
           onChange={handleForm}
@@ -49,7 +49,7 @@ export default function SignInPage() {
         />
         <input
           name="password"
-          placeholder="password"
+          placeholder="Password"
           type="password"
           autocomplete="new-password"
           value={form.password}
