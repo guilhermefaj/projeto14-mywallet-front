@@ -4,13 +4,13 @@ import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../contexts/UserContexts"
 import apiAuth from "../services/apiAuth"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export default function HomePage() {
   const { user } = useContext(UserContext)
   const [cashFlow, setCashFlow] = useState([])
   const navigate = useNavigate()
-  console.log(user.token)
+
   useEffect(() => {
     const config = {
       headers: { Authorization: `Bearer ${user.token}` }

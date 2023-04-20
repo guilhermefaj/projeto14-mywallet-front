@@ -17,8 +17,8 @@ function transacoes(config) {
     return promise
 }
 
-function novaTransacao(body, type) {
-    const promise = axios.post(`${BASE_URL}/nova-transacao/${type}`, body)
+function novaTransacao(body, type, config) {
+    const promise = axios.post(`${BASE_URL}/nova-transacao/${type}`, body, config)
     return promise
 }
 

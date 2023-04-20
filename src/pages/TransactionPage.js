@@ -1,24 +1,29 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import styled from "styled-components"
 import apiAuth from "../services/apiAuth"
 import { useParams } from "react-router-dom"
+import { UserContext } from "../contexts/UserContexts"
 
 export default function TransactionsPage() {
+  const { user } = useContext(UserContext)
   const [form, setForm] = useState({ transactionName: "", value: "" })
   const [loading, setLoading] = useState(false)
-  const { type } = useParams()
+  const tempType = useParams()
+  const type = tempType.tipo
 
   function handleForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  console.log("Type:", type)
-
   function handleTransaction(e) {
     e.preventDefault()
     setLoading(true)
 
-    apiAuth.novaTransacao(form, type)
+    const config = {
+      headers: { Authorization: `Bearer ${user.token}` }
+    }
+
+    apiAuth.novaTransacao(form, type, config)
       .then((res) => {
         setLoading(false)
         console.log(res.data)
