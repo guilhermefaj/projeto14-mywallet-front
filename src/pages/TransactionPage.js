@@ -1,8 +1,8 @@
 import { useContext, useState } from "react"
 import styled from "styled-components"
-import apiAuth from "../services/apiAuth"
 import { useParams } from "react-router-dom"
 import { UserContext } from "../contexts/UserContexts"
+import apiTransactions from "../services/apiTransactions"
 
 export default function TransactionsPage() {
   const { user } = useContext(UserContext)
@@ -23,7 +23,7 @@ export default function TransactionsPage() {
       headers: { Authorization: `Bearer ${user.token}` }
     }
 
-    apiAuth.novaTransacao(form, type, config)
+    apiTransactions.novaTransacao(form, type, config)
       .then((res) => {
         setLoading(false)
         console.log(res.data)

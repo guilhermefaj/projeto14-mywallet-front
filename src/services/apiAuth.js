@@ -12,15 +12,5 @@ function cadastro(body) {
     return promise
 }
 
-function transacoes(config) {
-    const promise = axios.get(`${BASE_URL}/home`, config)
-    return promise
-}
-
-function novaTransacao(body, type, config) {
-    const promise = axios.post(`${BASE_URL}/nova-transacao/${type}`, body, config)
-    return promise
-}
-
-const apiAuth = { login, cadastro, transacoes, novaTransacao }
+const apiAuth = { login, cadastro }
 export default apiAuth

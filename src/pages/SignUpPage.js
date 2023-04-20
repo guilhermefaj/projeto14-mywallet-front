@@ -11,9 +11,6 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  console.log("form", form)
-  console.log("confirmation:", confirmation)
-
   function handleForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
   }

@@ -3,8 +3,9 @@ import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../contexts/UserContexts"
-import apiAuth from "../services/apiAuth"
 import { useNavigate } from "react-router-dom"
+import apiTransactions from "../services/apiTransactions"
+import TransactionLine from "../components/TransactionLine"
 
 export default function HomePage() {
   const { user } = useContext(UserContext)
@@ -15,10 +16,12 @@ export default function HomePage() {
     const config = {
       headers: { Authorization: `Bearer ${user.token}` }
     }
-
-    apiAuth.transacoes(config)
+    console.log("cash:", cashFlow)
+    apiTransactions.transacoes(config)
       .then(res => {
-        console.log(res.data)
+        const apiCashFlow = res.data
+        setCashFlow(apiCashFlow)
+        console.log("res.data:", res.data)
       })
       .catch(err => {
         console.log(err.response.data)
@@ -33,6 +36,14 @@ export default function HomePage() {
     navigate("/nova-transacao/saida")
   }
 
+  if (!cashFlow) {
+    return (
+      <div>
+        carregando...
+      </div>
+    )
+  }
+
   return (
     <HomeContainer>
       <Header>
@@ -42,21 +53,17 @@ export default function HomePage() {
 
       <TransactionsContainer>
         <ul>
-          <ListItemContainer>
-            <div>
-              <span>30/11</span>
-              <strong>Almoço mãe</strong>
-            </div>
-            <Value color={"negativo"}>120,00</Value>
-          </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
+          {cashFlow.map(item => {
+            return (
+              <TransactionLine
+                key={item._id}
+                name={item.transactionName}
+                value={item.value}
+                type={item.type}
+                date={item.date}
+              />
+            )
+          })}
         </ul>
 
         <article>
@@ -136,16 +143,4 @@ const Value = styled.div`
   font-size: 16px;
   text-align: right;
   color: ${(props) => (props.color === "positivo" ? "green" : "red")};
-`
-const ListItemContainer = styled.li`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  color: #000000;
-  margin-right: 10px;
-  div span {
-    color: #c6c6c6;
-    margin-right: 10px;
-  }
 `
