@@ -24,7 +24,10 @@ export default function SignInPage() {
     apiAuth.login(form)
       .then(res => {
         setLoading(false)
+        const { email, name, token, userId } = res.data
         setUser(res.data)
+        localStorage.setItem("user", JSON.stringify({ email, name, token, userId }))
+
         navigate("/home")
       })
       .catch(err => {
