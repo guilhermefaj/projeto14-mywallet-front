@@ -9,6 +9,7 @@ import { UserContext } from "./contexts/UserContexts"
 
 export default function App() {
   const [user, setUser] = useState({})
+  const [type, setType] = useState("")
 
   return (
     <PagesContainer>

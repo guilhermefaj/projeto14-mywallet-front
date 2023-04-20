@@ -1,12 +1,42 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { useContext, useEffect, useState } from "react"
+import { UserContext } from "../contexts/UserContexts"
+import apiAuth from "../services/apiAuth"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function HomePage() {
+  const { user } = useContext(UserContext)
+  const [cashFlow, setCashFlow] = useState([])
+  const navigate = useNavigate()
+  console.log(user.token)
+  useEffect(() => {
+    const config = {
+      headers: { Authorization: `Bearer ${user.token}` }
+    }
+
+    apiAuth.transacoes(config)
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err.response.data)
+      })
+  }, [])
+
+  function moneyIn() {
+    navigate("/nova-transacao/entrada")
+  }
+
+  function moneyOut() {
+    navigate("/nova-transacao/saida")
+  }
+
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
+        <h1>Olá, {user.name}</h1>
         <BiExit />
       </Header>
 
@@ -37,11 +67,11 @@ export default function HomePage() {
 
 
       <ButtonsContainer>
-        <button>
+        <button onClick={() => moneyIn()}>
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </button>
-        <button>
+        <button onClick={() => moneyOut()}>
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>

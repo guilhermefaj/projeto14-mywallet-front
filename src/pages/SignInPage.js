@@ -20,12 +20,11 @@ export default function SignInPage() {
     e.preventDefault()
     setLoading(true)
 
-    const body = { email: "", password: "" }
+    // const body = { email: "", password: "" }
     apiAuth.login(form)
       .then(res => {
         setLoading(false)
-        const { userId, token } = res.data
-        setUser({ userId, token })
+        setUser(res.data)
         navigate("/home")
       })
       .catch(err => {
