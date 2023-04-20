@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import styled from "styled-components"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { UserContext } from "../contexts/UserContexts"
 import apiTransactions from "../services/apiTransactions"
 
@@ -10,6 +10,7 @@ export default function TransactionsPage() {
   const [loading, setLoading] = useState(false)
   const tempType = useParams()
   const type = tempType.tipo
+  const navigate = useNavigate()
 
   function handleForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -26,11 +27,11 @@ export default function TransactionsPage() {
     apiTransactions.novaTransacao(form, type, config)
       .then((res) => {
         setLoading(false)
-        console.log(res.data)
+        navigate("/home")
       })
       .catch((err) => {
         setLoading(false)
-        console.log(err.response.data)
+        alert(err.response.data)
       })
   }
 

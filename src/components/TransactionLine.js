@@ -28,5 +28,5 @@ const ListItemContainer = styled.li`
 const Value = styled.div`
   font-size: 16px;
   text-align: right;
-  color: ${(props) => (props.color === "entrada" ? "green" : "red")};
+  color: ${(props) => (props.color === "entrada" ? "#03AC00" : "#C70000")};
 `

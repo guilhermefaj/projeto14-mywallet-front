@@ -10,21 +10,20 @@ import TransactionLine from "../components/TransactionLine"
 export default function HomePage() {
   const { user } = useContext(UserContext)
   const [cashFlow, setCashFlow] = useState([])
+  const [soma, setSoma] = useState(0)
   const navigate = useNavigate()
 
   useEffect(() => {
     const config = {
       headers: { Authorization: `Bearer ${user.token}` }
     }
-    console.log("cash:", cashFlow)
     apiTransactions.transacoes(config)
       .then(res => {
         const apiCashFlow = res.data
         setCashFlow(apiCashFlow)
-        console.log("res.data:", res.data)
       })
       .catch(err => {
-        console.log(err.response.data)
+        alert(err.response.data)
       })
   }, [])
 
@@ -36,13 +35,18 @@ export default function HomePage() {
     navigate("/nova-transacao/saida")
   }
 
-  if (!cashFlow) {
-    return (
-      <div>
-        carregando...
-      </div>
-    )
-  }
+  useEffect(() => {
+    let total = 0;
+    cashFlow.forEach((item) => {
+      if (item.type === "entrada") {
+        total += parseFloat(item.value);
+      }
+      if (item.type === "saida") {
+        total -= parseFloat(item.value);
+      }
+    });
+    setSoma(total);
+  }, [cashFlow]);
 
   return (
     <HomeContainer>
@@ -53,23 +57,35 @@ export default function HomePage() {
 
       <TransactionsContainer>
         <ul>
-          {cashFlow.map(item => {
-            return (
-              <TransactionLine
-                key={item._id}
-                name={item.transactionName}
-                value={item.value}
-                type={item.type}
-                date={item.date}
-              />
-            )
-          })}
+          {cashFlow.length > 0 ? (
+            cashFlow.map(item => {
+              return (
+                <TransactionLine
+                  key={item._id}
+                  name={item.transactionName}
+                  value={item.value}
+                  type={item.type}
+                  date={item.date}
+                />
+              )
+            })
+          ) : (
+            <EmptyList>
+              Não há registros de entrada ou saída
+            </EmptyList>
+          )}
+
         </ul>
 
-        <article>
-          <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
-        </article>
+
+        {cashFlow.length > 0 ? (
+          <article>
+            <strong>Saldo</strong>
+            <Value color={"positivo"}>{soma ? soma : ""}</Value>
+          </article>
+        ) : ""
+        }
+
       </TransactionsContainer>
 
 
@@ -111,6 +127,7 @@ const TransactionsContainer = styled.article`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
   article {
     display: flex;
     justify-content: space-between;   
@@ -120,6 +137,23 @@ const TransactionsContainer = styled.article`
     }
   }
 `
+
+const EmptyList = styled.div`
+  color: #868686;
+  width: 180px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%; 
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  transform: translateY(-50%);
+  text-align: center;
+`
+
 const ButtonsContainer = styled.section`
   margin-top: 15px;
   margin-bottom: 0;
@@ -139,8 +173,9 @@ const ButtonsContainer = styled.section`
     }
   }
 `
+
 const Value = styled.div`
   font-size: 16px;
   text-align: right;
-  color: ${(props) => (props.color === "positivo" ? "green" : "red")};
+  color: ${(props) => (props.color === "positivo" ? "#03AC00" : "#C70000")};
 `
