@@ -48,11 +48,16 @@ export default function HomePage() {
     setSoma(total);
   }, [cashFlow]);
 
+  function cleanLocalStorage() {
+    localStorage.clear()
+    navigate("/")
+  }
+
   return (
     <HomeContainer>
       <Header>
         <h1>Olá, {user.name}</h1>
-        <BiExit />
+        <BiExit onClick={cleanLocalStorage} />
       </Header>
 
       <TransactionsContainer>
