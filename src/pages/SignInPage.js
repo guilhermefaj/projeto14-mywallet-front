@@ -8,7 +8,7 @@ import { ThreeDots } from "react-loader-spinner"
 
 export default function SignInPage() {
   const [form, setForm] = useState({ email: "", password: "" })
-  const { user, setUser } = useContext(UserContext)
+  const { setUser } = useContext(UserContext)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
