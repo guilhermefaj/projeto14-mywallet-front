@@ -7,6 +7,8 @@ O projeto My Wallet é um aplicativo web de gestão financeira pessoal que permi
 - Cálculo automático do saldo atual com base nas despesas e receitas registradas.
 - Visualização de histórico de transações.
 
+![myWallet_mockup](https://user-images.githubusercontent.com/68969592/234086477-033d95f6-5e1f-480a-abb1-a8249babae01.png)
+
 ## Tecnologias utilizadas
 O projeto My Wallet é desenvolvido utilizando as seguintes tecnologias:
 
