@@ -73,7 +73,7 @@ export default function HomePage() {
                   date={item.date}
                 />
               )
-            })
+            }).reverse()
           ) : (
             <EmptyList>
               Não há registros de entrada ou saída
@@ -86,7 +86,7 @@ export default function HomePage() {
         {cashFlow.length > 0 ? (
           <article>
             <strong>Saldo</strong>
-            <Value color={"positivo"}>{soma ? soma : ""}</Value>
+            <Value>{soma ? soma : ""}</Value>
           </article>
         ) : ""
         }
@@ -124,6 +124,7 @@ const Header = styled.header`
   color: white;
 `
 const TransactionsContainer = styled.article`
+  overflow-y: auto;
   flex-grow: 1;
   background-color: #fff;
   color: #000;
@@ -133,9 +134,17 @@ const TransactionsContainer = styled.article`
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  ul{
+      margin-bottom: 15px;
+    }
   article {
     display: flex;
     justify-content: space-between;   
+    background-color: #fff;
+    position: sticky;
+    padding-bottom: 10px;
+    bottom: -16px;
+
     strong {
       font-weight: 700;
       text-transform: uppercase;
